@@ -1,16 +1,22 @@
 import './Card.css';
+import { AiFillCloseCircle } from 'react-icons/ai';
 
-function Card(props) {
-  const color = {backgroundColor: props.color};
+function Card({card, bgColor, whenDeleted}) {
+  const backgroundColor = {backgroundColor: bgColor};
 
   return (
     <div className="card">
-      <div style={color} className="header">
-        <img src={props.image} alt={props.name}/>
+      <AiFillCloseCircle 
+        size={25} 
+        className="delete" 
+        onClick={() => whenDeleted(card.id)}
+      />
+      <div style={backgroundColor} className="header">
+        <img src={card.image} alt={card.name}/>
       </div>
       <div className="footer">
-        <h4>{props.name}</h4>
-        <h5>{props.position}</h5>
+        <h4>{card.name}</h4>
+        <h5>{card.position}</h5>
       </div>
     </div>
   );

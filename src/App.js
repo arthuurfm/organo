@@ -3,57 +3,78 @@ import Banner from './components/Banner';
 import Form from './components/Form';
 import Sector from './components/Sector';
 import Footer from './components/Footer';
+import {v4 as uuidv4} from 'uuid';
 
 function App() {
 
   // estilização de cada setor da lista.
-  const sectors = [
+  const [sectors, setSectors] = useState([
     {
+      id: uuidv4(),
       name: 'Goleiro',
-      primaryColor: '#57c278',
-      secundaryColor: '#d9f7e9'
+      color: '#57c278',
     },
     {
+      id: uuidv4(),
       name: 'Defesa',
-      primaryColor: '#a6d157',
-      secundaryColor: '#f0f8e2'
+      color: '#a6d157',
     },
     {
+      id: uuidv4(),
       name: 'Meio-campo',
-      primaryColor: '#ffba05',
-      secundaryColor: '#fff5d9'
+      color: '#ffba05',
     },
     {
+      id: uuidv4(),
       name: 'Ataque',
-      primaryColor: '#ff8a29',
-      secundaryColor: '#ffeedf'
+      color: '#ff8a29',
     },
-  ];
+  ]);
 
   const [players, setPlayers] = useState([]);
 
+  const deletePlayer = (id) => {
+    setPlayers(players.filter(player => player.id !== id));
+  } 
+
   // quando um novo item é adicionado, espalha a lista antiga com o novo item.
   const whenNewPlayerAdded = (player) => {
-    debugger;
-    setPlayers([...players, player]);
+    const newPlayer = {...player, id: uuidv4()}
+    setPlayers([...players, newPlayer]);
+  }
+
+  const changeSectorColor = (color, id) => {
+    setSectors(sectors.map(sector => {
+      if (sector.id === id) {
+        sector.color = color;
+      }
+      return sector;
+    }));
+  }
+
+  const registerSector = (newSector) => {
+    setSectors([...sectors, {...newSector, id: uuidv4()}]);
   }
 
   return (
     <div className="App"> 
       <Banner/>
-      <Form 
+      <Form
+        registerSector={registerSector}
         sectorsName={sectors.map(sector => sector.name)}
         whenRegisteredPlayer={player => whenNewPlayerAdded(player)}
       />
-      {sectors.map(sector => 
-        <Sector 
-          key={sector.name} 
-          name={sector.name} 
-          primaryColor={sector.primaryColor}
-          secundaryColor={sector.secundaryColor}
-          cards={players.filter(player => player.sector === sector.name)}
-        />
-      )}
+      {sectors.map((sector, index) => {
+        return (
+          <Sector 
+            key={index} 
+            sector={sector}
+            cards={players.filter(player => player.sector === sector.name)}
+            whenDeleted={deletePlayer}
+            changeColor={changeSectorColor}
+          />
+        )
+      })}
       <Footer/>
     </div>
   );

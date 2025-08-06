@@ -1,14 +1,14 @@
 import './DropdownList.css';
 
 // uma lista onde os itens são criados dinamicamente com um array.
-function DropdownList(props) {
+function DropdownList({label, value, whenChanged, itens, required}) {
   return (
     <div className='dropdown-list'>
-      <label>{props.label}</label>
-      <select onChange={event => props.whenChanged(event.target.value)} required={props.required}
-      value={props.value}>
+      <label>{label}</label>
+      <select onChange={event => whenChanged(event.target.value)} required={required}
+      value={value}>
         <option value="">Selecione um setor</option>
-        {props.itens.map(item => <option key={item}>{item}</option>)}
+        {itens.map(item => <option key={item}>{item}</option>)}
       </select>
     </div>
   );

@@ -1,24 +1,37 @@
 import './Sector.css';
-import Card from '../Card'
+import Card from '../Card';
+import hexToRgba from 'hex-to-rgba';
 
-function Sector(props) {
-
+function Sector({whenDeleted, cards, sector, changeColor}) {
+  // exclui um card de acordo com seu index e seu id único.
+  const handleDelete = (playerId, index) => {
+    whenDeleted(playerId, index);
+  }
   return (
-    (props.cards.length > 0) && 
-    <section className="sector" style={{backgroundColor: props.secundaryColor}}>
-      <h3 style={{borderColor: props.primaryColor}}>{props.name}</h3>
-      <div className="cards">
-        {props.cards.map(card => 
-          <Card
-            key={card.name}
-            name={card.name} 
-            position={card.position} 
-            image={card.image}
-            color={props.primaryColor}
-          />
-        )}
-      </div>
-    </section>
+    (cards.length > 0) && 
+    <>
+      <section className="sector" style={{backgroundColor: hexToRgba(sector.color, 0.5)}}>
+        <input 
+          className="input-color"
+          type="color" 
+          value={sector.color}
+          onChange={event => changeColor(event.target.value, sector.id)} 
+        />
+        <h3 style={{borderColor: sector.color}}>{sector.name}</h3>
+        <div className="cards">
+          {cards.map((card, index) => {
+            return (
+              <Card
+                key={index}
+                card={card}
+                bgColor={sector.color}
+                whenDeleted={() => handleDelete(card.id, index)}
+              />
+            );
+          })}
+        </div>
+      </section>
+    </>
   );
 }
 
