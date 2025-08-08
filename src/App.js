@@ -56,6 +56,13 @@ function App() {
     setSectors([...sectors, {...newSector, id: uuidv4()}]);
   }
 
+  const solveFavorite = (id) => {
+    setPlayers(players.map(player => {
+      if (player.id === id) player.favorite = !player.favorite;
+      return player;
+    }));
+  }
+
   return (
     <div className="App"> 
       <Banner/>
@@ -72,6 +79,7 @@ function App() {
             cards={players.filter(player => player.sector === sector.name)}
             whenDeleted={deletePlayer}
             changeColor={changeSectorColor}
+            whenFavorite={solveFavorite}
           />
         )
       })}

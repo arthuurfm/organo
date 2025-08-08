@@ -1,8 +1,18 @@
 import './Card.css';
-import { AiFillCloseCircle } from 'react-icons/ai';
+import { AiFillCloseCircle, AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
-function Card({card, bgColor, whenDeleted}) {
+function Card({card, bgColor, whenDeleted, whenFavorite}) {
   const backgroundColor = {backgroundColor: bgColor};
+
+  const favorite = () => {
+    whenFavorite(card.id);
+  }
+
+  // propriedades globais para todos com classe favorite.
+  const propsFavorite = {
+    size: 25,
+    onClick: favorite
+  }
 
   return (
     <div className="card">
@@ -17,6 +27,11 @@ function Card({card, bgColor, whenDeleted}) {
       <div className="footer">
         <h4>{card.name}</h4>
         <h5>{card.position}</h5>
+        <div className="favorite">
+          {card.favorite
+            ? <AiFillHeart {...propsFavorite} color="#ff0000"/>
+            : <AiOutlineHeart {...propsFavorite}/>}
+        </div>
       </div>
     </div>
   );

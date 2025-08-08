@@ -2,7 +2,8 @@ import './Sector.css';
 import Card from '../Card';
 import hexToRgba from 'hex-to-rgba';
 
-function Sector({whenDeleted, cards, sector, changeColor}) {
+function Sector({whenDeleted, cards, sector, changeColor, whenFavorite}) {
+
   // exclui um card de acordo com seu index e seu id único.
   const handleDelete = (playerId, index) => {
     whenDeleted(playerId, index);
@@ -26,6 +27,7 @@ function Sector({whenDeleted, cards, sector, changeColor}) {
                 card={card}
                 bgColor={sector.color}
                 whenDeleted={() => handleDelete(card.id, index)}
+                whenFavorite={whenFavorite}
               />
             );
           })}
